@@ -6,6 +6,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Sidebar } from "@/components/layout/Sidebar";
 import Index from "./pages/Index";
 import Proyectos from "./pages/Proyectos";
+import Areas from "./pages/Areas";
+import Recursos from "./pages/Recursos";
+import Archivo from "./pages/Archivo";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +25,9 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/proyectos" element={<Proyectos />} />
+              <Route path="/areas" element={<Areas />} />
+              <Route path="/recursos" element={<Recursos />} />
+              <Route path="/archivo" element={<Archivo />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
