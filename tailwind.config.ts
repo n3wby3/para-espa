@@ -26,7 +26,9 @@ export default {
 				foreground: 'hsl(var(--foreground))',
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					foreground: 'hsl(var(--primary-foreground))',
+					hover: 'hsl(var(--primary-hover))',
+					light: 'hsl(var(--primary-light))'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
@@ -61,6 +63,16 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				para: {
+					projects: 'hsl(var(--para-projects))',
+					'projects-light': 'hsl(var(--para-projects-light))',
+					areas: 'hsl(var(--para-areas))',
+					'areas-light': 'hsl(var(--para-areas-light))',
+					resources: 'hsl(var(--para-resources))',
+					'resources-light': 'hsl(var(--para-resources-light))',
+					archive: 'hsl(var(--para-archive))',
+					'archive-light': 'hsl(var(--para-archive-light))'
 				}
 			},
 			borderRadius: {
