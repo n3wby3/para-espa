@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 
 // Datos de ejemplo
-const proyectos = [
+const proyectosIniciales = [
   {
     id: 1,
     titulo: "Rediseño de la aplicación móvil",
@@ -84,10 +84,25 @@ const proyectos = [
 const estadosDisponibles = ["Todos", "En progreso", "Pausado", "Completado"];
 const prioridadesDisponibles = ["Todas", "Alta", "Media", "Baja"];
 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { CrearProyectoForm } from "@/components/dashboard/CrearProyectoForm";
+
 export default function Proyectos() {
+  const [proyectos, setProyectos] = useState(proyectosIniciales);
   const [busqueda, setBusqueda] = useState("");
   const [filtroEstado, setFiltroEstado] = useState("Todos");
   const [filtroPrioridad, setFiltroPrioridad] = useState("Todas");
+  const [isCreateModalOpen, setCreateModalOpen] = useState(false);
+
+  const handleProjectCreate = (newProject: any) => {
+    setProyectos([newProject, ...proyectos]);
+  };
 
   const proyectosFiltrados = proyectos.filter(proyecto => {
     const coincideBusqueda = proyecto.titulo.toLowerCase().includes(busqueda.toLowerCase()) ||
@@ -164,10 +179,23 @@ export default function Proyectos() {
             Gestiona tus proyectos activos con fechas límite específicas
           </p>
         </div>
-        <Button variant="projects" size="lg" className="gap-2">
-          <Plus className="h-5 w-5" />
-          Nuevo Proyecto
-        </Button>
+        <Dialog open={isCreateModalOpen} onOpenChange={setCreateModalOpen}>
+          <DialogTrigger asChild>
+            <Button variant="projects" size="lg" className="gap-2">
+              <Plus className="h-5 w-5" />
+              Nuevo Proyecto
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Crear Nuevo Proyecto</DialogTitle>
+            </DialogHeader>
+            <CrearProyectoForm
+              onProjectCreate={handleProjectCreate}
+              onClose={() => setCreateModalOpen(false)}
+            />
+          </DialogContent>
+        </Dialog>
       </div>
 
       {/* Filters */}
