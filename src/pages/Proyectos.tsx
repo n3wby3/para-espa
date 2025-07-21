@@ -29,7 +29,8 @@ const proyectosIniciales = [
     fechaVencimiento: "2024-02-15",
     progreso: 65,
     etiquetas: ["UI/UX", "Móvil", "Frontend"],
-    responsable: "Equipo de Diseño"
+    responsable: "Equipo de Diseño",
+    area: "Desarrollo Personal"
   },
   {
     id: 2,
@@ -41,7 +42,8 @@ const proyectosIniciales = [
     fechaVencimiento: "2024-02-20",
     progreso: 30,
     etiquetas: ["Backend", "Seguridad", "API"],
-    responsable: "Equipo Backend"
+    responsable: "Equipo Backend",
+    area: "Infraestructura Tecnológica"
   },
   {
     id: 3,
@@ -53,7 +55,8 @@ const proyectosIniciales = [
     fechaVencimiento: "2024-03-01",
     progreso: 15,
     etiquetas: ["Documentación", "API", "DevEx"],
-    responsable: "Equipo Técnico"
+    responsable: "Equipo Técnico",
+    area: "Infraestructura Tecnológica"
   },
   {
     id: 4,
@@ -65,7 +68,8 @@ const proyectosIniciales = [
     fechaVencimiento: "2024-01-25",
     progreso: 100,
     etiquetas: ["Base de datos", "Performance", "Backend"],
-    responsable: "DBA Team"
+    responsable: "DBA Team",
+    area: "Infraestructura Tecnológica"
   },
   {
     id: 5,
@@ -77,11 +81,12 @@ const proyectosIniciales = [
     fechaVencimiento: "2024-02-28",
     progreso: 45,
     etiquetas: ["Notificaciones", "Real-time", "Usuario"],
-    responsable: "Equipo Fullstack"
+    responsable: "Equipo Fullstack",
+    area: "Desarrollo Personal"
   }
 ];
 
-const estadosDisponibles = ["Todos", "En progreso", "Pausado", "Completado"];
+const estadosDisponibles = ["Todos", "En progreso", "En espera", "Pausado", "Completado"];
 const prioridadesDisponibles = ["Todas", "Alta", "Media", "Baja"];
 
 import {
@@ -93,7 +98,17 @@ import {
 } from "@/components/ui/dialog";
 import { CrearProyectoForm } from "@/components/dashboard/CrearProyectoForm";
 
-export default function Proyectos() {
+interface Area {
+  id: number;
+  nombre: string;
+}
+
+interface ProyectosProps {
+  areas: Area[];
+  onAreaCreate: (newAreaName: string) => void;
+}
+
+export default function Proyectos({ areas, onAreaCreate }: ProyectosProps) {
   const [proyectos, setProyectos] = useState(proyectosIniciales);
   const [busqueda, setBusqueda] = useState("");
   const [filtroEstado, setFiltroEstado] = useState("Todos");
@@ -193,6 +208,8 @@ export default function Proyectos() {
             <CrearProyectoForm
               onProjectCreate={handleProjectCreate}
               onClose={() => setCreateModalOpen(false)}
+              areas={areas}
+              onAreaCreate={onAreaCreate}
             />
           </DialogContent>
         </Dialog>

@@ -18,133 +18,27 @@ import {
 } from "lucide-react";
 
 // Datos de ejemplo para áreas
-const areas = [
-  {
-    id: 1,
-    nombre: "Desarrollo Personal",
-    descripcion: "Crecimiento profesional, habilidades técnicas y formación continua",
-    categoria: "Profesional",
-    estado: "saludable",
-    ultimaRevision: "2024-01-20",
-    proximaRevision: "2024-02-20",
-    kpis: [
-      { nombre: "Horas de estudio", valor: 25, objetivo: 30, unidad: "horas/mes" },
-      { nombre: "Cursos completados", valor: 2, objetivo: 3, unidad: "cursos/trimestre" }
-    ],
-    notas: "Progreso constante en tecnologías frontend. Enfocar en TypeScript avanzado.",
-    responsabilidades: [
-      "Mantenerse actualizado con tecnologías",
-      "Completar certificaciones",
-      "Participar en comunidades tech",
-      "Mentorear desarrolladores junior"
-    ]
-  },
-  {
-    id: 2,
-    nombre: "Gestión de Equipo",
-    descripcion: "Liderazgo, coordinación y desarrollo del equipo de trabajo",
-    categoria: "Liderazgo",
-    estado: "revision",
-    ultimaRevision: "2024-01-10",
-    proximaRevision: "2024-02-10",
-    kpis: [
-      { nombre: "Satisfacción del equipo", valor: 7.5, objetivo: 8.5, unidad: "/10" },
-      { nombre: "Velocidad de entrega", valor: 85, objetivo: 90, unidad: "%" }
-    ],
-    notas: "Necesita más comunicación proactiva. Implementar reuniones 1:1 semanales.",
-    responsabilidades: [
-      "Realizar reuniones de seguimiento",
-      "Gestionar carga de trabajo",
-      "Facilitar resolución de conflictos",
-      "Planificar desarrollo profesional del equipo"
-    ]
-  },
-  {
-    id: 3,
-    nombre: "Finanzas Personales",
-    descripcion: "Gestión de presupuesto, inversiones y planificación financiera",
-    categoria: "Personal",
-    estado: "saludable",
-    ultimaRevision: "2024-01-18",
-    proximaRevision: "2024-02-18",
-    kpis: [
-      { nombre: "Ahorro mensual", valor: 1200, objetivo: 1500, unidad: "€" },
-      { nombre: "ROI inversiones", valor: 8.2, objetivo: 7.0, unidad: "%" }
-    ],
-    notas: "Buen progreso en objetivos de ahorro. Considerar diversificar cartera.",
-    responsabilidades: [
-      "Revisar gastos mensuales",
-      "Actualizar presupuesto",
-      "Analizar rendimiento inversiones",
-      "Planificar objetivos a largo plazo"
-    ]
-  },
-  {
-    id: 4,
-    nombre: "Salud y Bienestar",
-    descripcion: "Ejercicio físico, alimentación saludable y bienestar mental",
-    categoria: "Personal",
-    estado: "atencion",
-    ultimaRevision: "2024-01-15",
-    proximaRevision: "2024-02-15",
-    kpis: [
-      { nombre: "Ejercicio semanal", valor: 2, objetivo: 4, unidad: "días/semana" },
-      { nombre: "Horas de sueño", valor: 6.5, objetivo: 8, unidad: "horas/día" }
-    ],
-    notas: "Necesita más consistencia en rutina de ejercicio. Mejorar higiene del sueño.",
-    responsabilidades: [
-      "Mantener rutina de ejercicio",
-      "Planificar comidas saludables",
-      "Gestionar estrés",
-      "Realizar chequeos médicos regulares"
-    ]
-  },
-  {
-    id: 5,
-    nombre: "Relaciones Familiares",
-    descripcion: "Tiempo de calidad con familia y mantenimiento de vínculos",
-    categoria: "Personal",
-    estado: "saludable",
-    ultimaRevision: "2024-01-22",
-    proximaRevision: "2024-02-22",
-    kpis: [
-      { nombre: "Tiempo familiar", valor: 15, objetivo: 20, unidad: "horas/semana" },
-      { nombre: "Actividades conjuntas", valor: 3, objetivo: 3, unidad: "actividades/mes" }
-    ],
-    notas: "Buena comunicación y tiempo de calidad. Mantener tradiciones familiares.",
-    responsabilidades: [
-      "Planificar actividades familiares",
-      "Mantener comunicación regular",
-      "Celebrar ocasiones especiales",
-      "Apoyar objetivos individuales de cada miembro"
-    ]
-  },
-  {
-    id: 6,
-    nombre: "Infraestructura Tecnológica",
-    descripcion: "Mantenimiento de sistemas, herramientas y procesos técnicos",
-    categoria: "Profesional",
-    estado: "revision",
-    ultimaRevision: "2024-01-12",
-    proximaRevision: "2024-02-12",
-    kpis: [
-      { nombre: "Uptime sistemas", valor: 99.2, objetivo: 99.5, unidad: "%" },
-      { nombre: "Vulnerabilidades resueltas", valor: 8, objetivo: 10, unidad: "por mes" }
-    ],
-    notas: "Actualizar documentación de procesos. Revisar políticas de backup.",
-    responsabilidades: [
-      "Monitorear sistemas en producción",
-      "Actualizar dependencias regularmente",
-      "Mantener documentación técnica",
-      "Implementar mejoras de seguridad"
-    ]
-  }
-];
-
 const categorias = ["Todas", "Profesional", "Personal", "Liderazgo"];
 const estados = ["Todos", "saludable", "revision", "atencion"];
 
-export default function Areas() {
+interface Area {
+  id: number;
+  nombre: string;
+  descripcion: string;
+  categoria: string;
+  estado: string;
+  ultimaRevision: string;
+  proximaRevision: string;
+  kpis: any[];
+  notas: string;
+  responsabilidades: string[];
+}
+
+interface AreasProps {
+  areas: Area[];
+}
+
+export default function Areas({ areas }: AreasProps) {
   const [busqueda, setBusqueda] = useState("");
   const [filtroCategoria, setFiltroCategoria] = useState("Todas");
   const [filtroEstado, setFiltroEstado] = useState("Todos");
