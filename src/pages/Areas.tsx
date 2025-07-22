@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Plus, 
   Search, 
@@ -14,8 +15,19 @@ import {
   CheckCircle,
   AlertTriangle,
   MoreHorizontal,
-  Target
+  Target,
+  BarChart3,
+  Users,
+  FileText,
+  Shield,
+  RefreshCw,
+  Heart
 } from "lucide-react";
+import HabitTracker from "@/components/areas/HabitTracker";
+import TaskAutomation from "@/components/areas/TaskAutomation";
+import MetricsDashboard from "@/components/areas/MetricsDashboard";
+import ScheduledReviews from "@/components/areas/ScheduledReviews";
+import EncryptedNotes from "@/components/areas/EncryptedNotes";
 
 // Datos de ejemplo para áreas
 const areas = [
@@ -148,6 +160,7 @@ export default function Areas() {
   const [busqueda, setBusqueda] = useState("");
   const [filtroCategoria, setFiltroCategoria] = useState("Todas");
   const [filtroEstado, setFiltroEstado] = useState("Todos");
+  const [selectedArea, setSelectedArea] = useState<number | null>(null);
 
   const areasFiltradas = areas.filter(area => {
     const coincideBusqueda = area.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
@@ -205,6 +218,8 @@ export default function Areas() {
     return diferencia;
   };
 
+  const selectedAreaData = selectedArea ? areas.find(a => a.id === selectedArea) : null;
+
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
@@ -220,6 +235,37 @@ export default function Areas() {
           Nueva Área
         </Button>
       </div>
+
+      {/* Main Tabs */}
+      <Tabs defaultValue="list" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-6">
+          <TabsTrigger value="list" className="gap-2">
+            <Target className="h-4 w-4" />
+            Lista
+          </TabsTrigger>
+          <TabsTrigger value="habits" className="gap-2">
+            <Heart className="h-4 w-4" />
+            Hábitos
+          </TabsTrigger>
+          <TabsTrigger value="automation" className="gap-2">
+            <RefreshCw className="h-4 w-4" />
+            Automatización
+          </TabsTrigger>
+          <TabsTrigger value="metrics" className="gap-2">
+            <BarChart3 className="h-4 w-4" />
+            Métricas
+          </TabsTrigger>
+          <TabsTrigger value="reviews" className="gap-2">
+            <Calendar className="h-4 w-4" />
+            Revisiones
+          </TabsTrigger>
+          <TabsTrigger value="notes" className="gap-2">
+            <Shield className="h-4 w-4" />
+            Notas
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="list" className="space-y-6">
 
       {/* Filters */}
       <Card>
@@ -244,7 +290,8 @@ export default function Areas() {
               <select
                 value={filtroCategoria}
                 onChange={(e) => setFiltroCategoria(e.target.value)}
-                className="px-3 py-2 border border-input bg-background rounded-md text-sm"
+                className="px-3 py-2 border border-input bg-background rounded-md text-sm z-10 relative"
+                style={{ backgroundColor: 'hsl(var(--background))' }}
               >
                 {categorias.map(categoria => (
                   <option key={categoria} value={categoria}>{categoria}</option>
@@ -254,7 +301,8 @@ export default function Areas() {
               <select
                 value={filtroEstado}
                 onChange={(e) => setFiltroEstado(e.target.value)}
-                className="px-3 py-2 border border-input bg-background rounded-md text-sm"
+                className="px-3 py-2 border border-input bg-background rounded-md text-sm z-10 relative"
+                style={{ backgroundColor: 'hsl(var(--background))' }}
               >
                 {estados.map(estado => (
                   <option key={estado} value={estado}>
@@ -425,7 +473,12 @@ export default function Areas() {
 
                 {/* Actions */}
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="flex-1">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="flex-1"
+                    onClick={() => setSelectedArea(area.id)}
+                  >
                     Ver Detalles
                   </Button>
                   <Button variant="areas" size="sm" className="flex-1">
@@ -456,6 +509,43 @@ export default function Areas() {
           </CardContent>
         </Card>
       )}
+        </TabsContent>
+
+        <TabsContent value="habits">
+          <HabitTracker 
+            areaId={selectedArea || 1}
+            areaName={selectedAreaData?.nombre || "Selecciona un área"}
+          />
+        </TabsContent>
+
+        <TabsContent value="automation">
+          <TaskAutomation 
+            areaId={selectedArea || 1}
+            areaName={selectedAreaData?.nombre || "Selecciona un área"}
+          />
+        </TabsContent>
+
+        <TabsContent value="metrics">
+          <MetricsDashboard 
+            areaId={selectedArea || 1}
+            areaName={selectedAreaData?.nombre || "Selecciona un área"}
+          />
+        </TabsContent>
+
+        <TabsContent value="reviews">
+          <ScheduledReviews 
+            areaId={selectedArea || 1}
+            areaName={selectedAreaData?.nombre || "Selecciona un área"}
+          />
+        </TabsContent>
+
+        <TabsContent value="notes">
+          <EncryptedNotes 
+            areaId={selectedArea || 1}
+            areaName={selectedAreaData?.nombre || "Selecciona un área"}
+          />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
