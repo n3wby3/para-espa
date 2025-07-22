@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Plus, 
   Search, 
@@ -14,8 +15,17 @@ import {
   Pause,
   Play,
   MoreHorizontal,
-  Filter
+  Filter,
+  BarChart3,
+  Timer,
+  FileText,
+  Kanban
 } from "lucide-react";
+import KanbanBoard from "@/components/projects/KanbanBoard";
+import GanttChart from "@/components/projects/GanttChart";
+import ProjectAnalytics from "@/components/projects/ProjectAnalytics";
+import TimeTracker from "@/components/projects/TimeTracker";
+import ProjectTemplates from "@/components/projects/ProjectTemplates";
 
 // Datos de ejemplo
 const proyectos = [
@@ -88,6 +98,7 @@ export default function Proyectos() {
   const [busqueda, setBusqueda] = useState("");
   const [filtroEstado, setFiltroEstado] = useState("Todos");
   const [filtroPrioridad, setFiltroPrioridad] = useState("Todas");
+  const [selectedProject, setSelectedProject] = useState<number | null>(null);
 
   const proyectosFiltrados = proyectos.filter(proyecto => {
     const coincideBusqueda = proyecto.titulo.toLowerCase().includes(busqueda.toLowerCase()) ||
@@ -154,6 +165,13 @@ export default function Proyectos() {
     return diferencia;
   };
 
+  const handleUpdateProyecto = (id: number, newState: string) => {
+    // In a real app, this would update the backend
+    console.log(`Updating project ${id} to state ${newState}`);
+  };
+
+  const selectedProjectData = selectedProject ? proyectos.find(p => p.id === selectedProject) : null;
+
   return (
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
@@ -169,6 +187,37 @@ export default function Proyectos() {
           Nuevo Proyecto
         </Button>
       </div>
+
+      {/* Main Tabs */}
+      <Tabs defaultValue="list" className="space-y-6">
+        <TabsList className="grid w-full grid-cols-6">
+          <TabsTrigger value="list" className="gap-2">
+            <Filter className="h-4 w-4" />
+            Lista
+          </TabsTrigger>
+          <TabsTrigger value="kanban" className="gap-2">
+            <Kanban className="h-4 w-4" />
+            Kanban
+          </TabsTrigger>
+          <TabsTrigger value="gantt" className="gap-2">
+            <Calendar className="h-4 w-4" />
+            Gantt
+          </TabsTrigger>
+          <TabsTrigger value="analytics" className="gap-2">
+            <BarChart3 className="h-4 w-4" />
+            Analíticas
+          </TabsTrigger>
+          <TabsTrigger value="time" className="gap-2">
+            <Timer className="h-4 w-4" />
+            Tiempo
+          </TabsTrigger>
+          <TabsTrigger value="templates" className="gap-2">
+            <FileText className="h-4 w-4" />
+            Plantillas
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="list" className="space-y-6">
 
       {/* Filters */}
       <Card>
@@ -360,7 +409,12 @@ export default function Proyectos() {
 
                 {/* Actions */}
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="flex-1">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="flex-1"
+                    onClick={() => setSelectedProject(proyecto.id)}
+                  >
                     Ver Detalles
                   </Button>
                   <Button variant="projects" size="sm" className="flex-1">
@@ -391,6 +445,34 @@ export default function Proyectos() {
           </CardContent>
         </Card>
       )}
+        </TabsContent>
+
+        <TabsContent value="kanban">
+          <KanbanBoard 
+            proyectos={proyectosFiltrados} 
+            onUpdateProyecto={handleUpdateProyecto}
+          />
+        </TabsContent>
+
+        <TabsContent value="gantt">
+          <GanttChart proyectos={proyectosFiltrados} />
+        </TabsContent>
+
+        <TabsContent value="analytics">
+          <ProjectAnalytics proyectos={proyectos} />
+        </TabsContent>
+
+        <TabsContent value="time">
+          <TimeTracker 
+            projectId={selectedProject || undefined}
+            projectTitle={selectedProjectData?.titulo}
+          />
+        </TabsContent>
+
+        <TabsContent value="templates">
+          <ProjectTemplates />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
